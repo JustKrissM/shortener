@@ -1,17 +1,30 @@
 package com.shortener.shortener.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
+import java.io.Serializable;
 
+
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
+
+@Entity
 @Data
-@Table
-public class Url {
+@NoArgsConstructor
+@AllArgsConstructor
+public class Url implements Serializable{
+
+    private static final long serialVersionUID = 1L; 
 
     @Id
-    private final String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private  Long  id;
 
     private String longUrl;
 
