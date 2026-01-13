@@ -8,7 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+
 public class Url implements Serializable{
 
     private static final long serialVersionUID = 1L; 
@@ -27,5 +27,9 @@ public class Url implements Serializable{
     private  Long  id;
 
     private String longUrl;
+
+    public Url(String longUrl){
+        this.longUrl = longUrl;
+    }
 
 }

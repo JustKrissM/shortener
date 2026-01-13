@@ -16,6 +16,8 @@ public class CorsConfig {
                         .allowedOrigins("http://localhost:3000")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowCredentials(true);
+                 
+                       
             }
         };
     }

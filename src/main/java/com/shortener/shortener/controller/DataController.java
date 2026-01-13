@@ -3,12 +3,15 @@ package com.shortener.shortener.controller;
 import java.math.BigInteger;
 import java.util.Optional;
 
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -37,7 +40,7 @@ public class DataController {
     }
 
 
-    @GetMapping("/{shortUrl:[a-z0-9]+}")
+    @GetMapping("/{shortUrl:[A-Za-z0-9]+}")
     public  RedirectView  getRedirected(@PathVariable String shortUrl){
         Optional<Url> redirectUrl =urlsService.getUrl(ShortenerUtils.decodeBase62(shortUrl)); 
         RedirectView redirectView = new RedirectView();
@@ -46,13 +49,16 @@ public class DataController {
            
  
     }
+    @ResponseBody
     @PostMapping("/url")
-    public String shortenUrl(@RequestBody Url url){
+    public ResponseEntity<String> shortenUrl(@RequestBody Url url){
         boolean protocol = url.getLongUrl().contains("https://") || url.getLongUrl().contains("http://");
-        Url finalUrl = protocol?url:new Url(url.getId(),"https://"+url.getLongUrl());
-        //String encodedUrl = ShortenerUtils.encodeBase62Reverse(new BigInteger("3021614606208"));
-        urlsService.saveUrl(finalUrl);
-        return "success url shortened";
+        
+        Url finalUrl = urlsService.saveUrl(protocol?url:new Url("https://"+url.getLongUrl()));
+      
+        String encodedUrl = ShortenerUtils.encodeBase62Reverse(new BigInteger(finalUrl.getId().toString()));
+        
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body("{\"shortUrl\":\""+encodedUrl+"\"}");
     }
    
 
