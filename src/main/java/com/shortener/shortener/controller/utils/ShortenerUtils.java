@@ -4,8 +4,8 @@ import java.math.BigInteger;
 public class ShortenerUtils
 {
 
-	public static String encodeBase62Reverse(BigInteger num){
-	    
+	public static String encodeBase62(BigInteger num){
+	    StringBuffer buffer;
 	    String encoded="";
 	    BigInteger remainder = BigInteger.ONE;
 	    BigInteger values [];
@@ -28,23 +28,11 @@ public class ShortenerUtils
 	        
 	        num = values[0];
 	    }while(values[0].intValue() != 0);
-	    
-		return encoded;
+		
+		buffer= new StringBuffer(encoded);
+		return buffer.reverse().toString();
 	}
 	
-	public static String encodeBase62(BigInteger num){
-	    
-	    
-	    String encoded = encodeBase62Reverse(num);
-	    
-	    String reversed = "";
-	    
-	    for(int i = encoded.length() - 1; i > 0; i--){
-	        
-	        reversed += encoded.charAt(i);
-	    }
-		return reversed;
-	}
 	
 
 

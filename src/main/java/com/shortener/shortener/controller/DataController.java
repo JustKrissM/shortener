@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.shortener.shortener.controller.utils.ShortenerUtils;
 import com.shortener.shortener.model.Url;
-import com.shortener.shortener.model.data.UrlRepository;
+
 import com.shortener.shortener.service.UrlService;
 
-import jakarta.servlet.http.HttpServletResponse;
+
 
 
 @RestController
@@ -35,7 +35,7 @@ public class DataController {
     @GetMapping("/")
     public String showUrl(@RequestParam Long id){
 
-        String encodedUrl = ShortenerUtils.encodeBase62Reverse(new BigInteger("3021614606208"));
+        String encodedUrl = ShortenerUtils.encodeBase62(new BigInteger("3021614606208"));
         return "Sucess new url : "+encodedUrl;
     }
 
@@ -49,14 +49,14 @@ public class DataController {
            
  
     }
-    @ResponseBody
+    
     @PostMapping("/url")
     public ResponseEntity<String> shortenUrl(@RequestBody Url url){
         boolean protocol = url.getLongUrl().contains("https://") || url.getLongUrl().contains("http://");
         
         Url finalUrl = urlsService.saveUrl(protocol?url:new Url("https://"+url.getLongUrl()));
       
-        String encodedUrl = ShortenerUtils.encodeBase62Reverse(new BigInteger(finalUrl.getId().toString()));
+        String encodedUrl = ShortenerUtils.encodeBase62(new BigInteger(finalUrl.getId().toString()));
         
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body("{\"shortUrl\":\""+encodedUrl+"\"}");
     }
